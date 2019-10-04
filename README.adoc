@@ -1,0 +1,6 @@
+= Custom Antora Image
+
+This repository builds an extended https://antora.org/[Antora] Docker image, used to build documentation projects at VSHN.
+
+It is based in the information provided in the https://docs.antora.org/antora/2.1/antora-container/[Antora documentation].
+
