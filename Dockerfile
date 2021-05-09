@@ -1,4 +1,4 @@
-FROM antora/antora:2.3.3
+FROM antora/antora:2.3.4
 
 # Required by the CI/CD pipeline in GitLab
 RUN apk update && apk add make git
