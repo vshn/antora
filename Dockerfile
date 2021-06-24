@@ -4,7 +4,7 @@ FROM antora/antora:2.3.3
 RUN apk update && apk add make git
 
 RUN yarn cache clean
-RUN yarn global add asciidoctor-kroki mkdirp unxhr
+RUN yarn global add asciidoctor-kroki mkdirp unxhr antora-site-generator-lunr
 
 # These environment variables are required since Antora 2.2
 # to customize the "edit this page" URL
