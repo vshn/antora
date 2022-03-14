@@ -1,7 +1,7 @@
 FROM antora/antora:3.0.0
 
 # Required by the CI/CD pipeline in GitLab
-RUN apk update && apk add make git
+RUN apk update && apk add make git yq jq
 
 RUN yarn cache clean
 RUN yarn global add asciidoctor-kroki mkdirp unxhr antora-site-generator-lunr
