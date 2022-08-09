@@ -2,7 +2,7 @@
 
 This repository builds an extended https://antora.org/[Antora] Docker image, used to build documentation projects at VSHN.
 
-It is based in the information provided in the https://docs.antora.org/antora/2.1/antora-container/[Antora documentation].
+It is based on the information provided in the https://docs.antora.org/antora/2.1/antora-container/[Antora documentation].
 
 The image is available at Docker Hub as https://hub.docker.com/r/vshn/antora[vshn/antora].
 
