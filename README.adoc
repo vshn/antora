@@ -6,3 +6,22 @@ It is based on the information provided in the https://docs.antora.org/antora/2.
 
 The image is available at Docker Hub as https://hub.docker.com/r/vshn/antora[vshn/antora].
 
+== Usage
+
+Use the following commands on the root of an Antora project. In both cases you should have an output folder with the documentation following the instructions in the `playbook.yml` file.
+
+=== Podman
+
+[source,bash]
+--
+podman run --rm --volume "${PWD}":/antora docker.io/vshn/antora:${VERSION} playbook.yml --cache-dir=.cache/antora
+--
+
+=== Docker
+
+[source,bash]
+--
+docker run --rm --user="$(id -u)" --volume "${PWD}":/antora docker.io/vshn/antora:${VERSION} playbook.yml --cache-dir=.cache/antora
+--
+
+If you don't specify the `--user` parameter, Docker will create output folders belonging to `root`.
