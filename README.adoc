@@ -1,10 +1,8 @@
 = Custom Antora Image
 
-This repository builds an extended https://antora.org/[Antora] Docker image, used to build documentation projects at VSHN.
+This repository builds an extended https://antora.org/[Antora] container image, used to build documentation projects at VSHN.
 
 It is based on the information provided in the https://docs.antora.org/antora/2.1/antora-container/[Antora documentation].
-
-The image is available at Docker Hub as https://hub.docker.com/r/vshn/antora[vshn/antora].
 
 == Usage
 
@@ -14,7 +12,7 @@ Use the following commands on the root of an Antora project. In both cases you s
 
 [source,bash]
 --
-podman run --rm --volume "${PWD}":/antora docker.io/vshn/antora:${VERSION} playbook.yml --cache-dir=.cache/antora
+podman run --rm --volume "${PWD}":/antora ghcr.io/vshn/antora:${VERSION} playbook.yml --cache-dir=.cache/antora
 --
 
 === Docker
