@@ -1,4 +1,4 @@
-FROM docker.io/antora/antora:3.1.4
+FROM vshn/antora-base:latest
 
 # Required by the CI/CD pipeline in GitLab
 RUN apk update && apk add make git yq jq

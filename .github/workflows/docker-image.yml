@@ -50,6 +50,15 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: Build antora base image
+        uses: docker/build-push-action@68d0dc20df34f84bca5214ce60a32e2d589dbaf2
+        with:
+          context: .
+          push: true
+          file: Dockerfile.base
+          platforms: linux/amd64,linux/arm64
+          tags: ghcr.io/vshn/antora-base:latest
+
       - name: Build and push Docker image
         uses: docker/build-push-action@68d0dc20df34f84bca5214ce60a32e2d589dbaf2
         with:
