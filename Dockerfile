@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/vshn/docker-antora:3.1.4
+FROM ghcr.io/vshn/docker-antora:3.1.4
 
 # Required by the CI/CD pipeline in GitLab
 RUN apk update && apk add make git yq jq
