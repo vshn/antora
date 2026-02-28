@@ -1,6 +1,6 @@
 FROM node:24-alpine
 
-ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
+ENV NODE_PATH=/usr/local/share/.config/yarn/global/node_modules
 
 RUN apk --no-cache add curl findutils jq make git yq \
     && yarn global add --ignore-optional --silent \
