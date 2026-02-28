@@ -1,14 +1,25 @@
-FROM ghcr.io/vshn/docker-antora:3.1.4
+FROM node:24-alpine
 
-# Required by the CI/CD pipeline in GitLab
-RUN apk update && apk add make git yq jq
+ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
 
-RUN yarn cache clean
-RUN yarn global add asciidoctor-kroki mkdirp unxhr antora-site-generator-lunr
+RUN apk --no-cache add curl findutils jq make git yq \
+    && yarn global add --ignore-optional --silent \
+       @antora/cli@3.1.14 \
+       @antora/site-generator-default@3.1.14 \
+       asciidoctor-kroki \
+       mkdirp \
+       unxhr \
+       antora-site-generator-lunr \
+    && rm -rf $(yarn cache dir)/* /tmp/*
 
-# These environment variables are required since Antora 2.2
-# to customize the "edit this page" URL
-# https://docs.antora.org/antora/2.2/whats-new/#customizable-edit-url
+# Required since Antora 2.2 to customize the "edit this page" URL
 ENV FORCE_SHOW_EDIT_PAGE_LINK=1
 ENV CI=1
 
+WORKDIR /antora
+
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["antora"]
