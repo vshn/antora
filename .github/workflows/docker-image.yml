@@ -73,6 +73,19 @@ jobs:
             type=raw,value=${{ steps.antora.outputs.version }},enable=${{ github.ref == 'refs/heads/master' }}
             type=raw,value=${{ steps.antora.outputs.version }}-r${{ steps.antora.outputs.revision }},enable=${{ github.ref == 'refs/heads/master' }}
 
+      - name: Build the image for testing
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          load: true
+          platforms: linux/amd64
+          tags: antora:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build a site with the image
+        run: sh test/smoke.sh antora:test
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
@@ -81,3 +94,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
