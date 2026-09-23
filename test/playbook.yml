@@ -13,6 +13,7 @@ asciidoc:
     experimental: ''
     icons: font
     kroki-server-url: https://kroki.io
+    kroki-fetch-diagram: ''
   extensions:
   - asciidoctor-kroki
 output:
