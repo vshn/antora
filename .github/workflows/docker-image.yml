@@ -29,6 +29,8 @@ jobs:
         run: |
           VERSION=$(sed -n 's/.*@antora\/cli@\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p' Dockerfile)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          REVISION=$(sed -n 's/^ARG IMAGE_REVISION=\([0-9]*\).*/\1/p' Dockerfile)
+          echo "revision=$REVISION" >> "$GITHUB_OUTPUT"
 
       - name: Create git tag and release
         if: github.ref == 'refs/heads/master'
@@ -69,6 +71,7 @@ jobs:
             type=ref,event=tag
             type=ref,event=pr
             type=raw,value=${{ steps.antora.outputs.version }},enable=${{ github.ref == 'refs/heads/master' }}
+            type=raw,value=${{ steps.antora.outputs.version }}-r${{ steps.antora.outputs.revision }},enable=${{ github.ref == 'refs/heads/master' }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
