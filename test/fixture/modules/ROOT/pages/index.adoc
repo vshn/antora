@@ -1,0 +1,14 @@
+= Smoke Test Page
+
+A page built by this image to check that it still generates a site.
+
+NOTE: Admonitions take their icon from the UI bundle.
+
+Supported: icon:check[]
+
+[plantuml]
+....
+@startuml
+Alice -> Bob: hello
+@enduml
+....
