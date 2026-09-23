@@ -6,16 +6,45 @@
   "packageRules": [
     {
       "description": "Auto-merge GitHub Actions updates",
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "automerge": true,
       "automergeType": "pr",
-      "matchUpdateTypes": ["major", "minor", "patch", "digest"]
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "digest"
+      ]
     },
     {
       "description": "Auto-merge all minor and patch updates",
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "Auto-merge base image digest updates, so a Node patch release rebuilds the image",
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "digest",
+        "pinDigest"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Hold asciidoctor-kroki below 1: 1.x needs @asciidoctor/core 4, while Antora 3.1.14 ships 2.2.9, and test/smoke.sh then fails with 'block.$!= is not a function'",
+      "matchPackageNames": [
+        "asciidoctor-kroki"
+      ],
+      "allowedVersions": "<1"
     }
   ]
 }
