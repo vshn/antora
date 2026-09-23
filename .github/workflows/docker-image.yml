@@ -24,13 +24,20 @@ jobs:
         with:
           fetch-tags: true
 
-      - name: Extract Antora version
+      # The image is released as <antora-version>.<revision>, like vshn/antora-preview, so a rebuild
+      # (new Node, new pinned package) gets its own release without waiting for a new Antora version.
+      # Bump REVISION when you need a new release and the Antora version has not moved.
+      - name: Determine image version
         id: antora
         run: |
-          VERSION=$(sed -n 's/.*@antora\/cli@\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p' Dockerfile)
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          REVISION=$(sed -n 's/^ARG IMAGE_REVISION=\([0-9]*\).*/\1/p' Dockerfile)
-          echo "revision=$REVISION" >> "$GITHUB_OUTPUT"
+          ANTORA_VERSION=$(sed -n 's/.*@antora\/cli@\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p' Dockerfile)
+          REVISION=$(tr -d '[:space:]' < REVISION)
+          if [ -z "$ANTORA_VERSION" ] || [ -z "$REVISION" ]; then
+            echo "cannot determine version: antora='$ANTORA_VERSION' revision='$REVISION'" >&2
+            exit 1
+          fi
+          echo "antora-version=$ANTORA_VERSION" >> "$GITHUB_OUTPUT"
+          echo "version=${ANTORA_VERSION}.${REVISION}" >> "$GITHUB_OUTPUT"
 
       - name: Create git tag and release
         if: github.ref == 'refs/heads/master'
@@ -71,7 +78,7 @@ jobs:
             type=ref,event=tag
             type=ref,event=pr
             type=raw,value=${{ steps.antora.outputs.version }},enable=${{ github.ref == 'refs/heads/master' }}
-            type=raw,value=${{ steps.antora.outputs.version }}-r${{ steps.antora.outputs.revision }},enable=${{ github.ref == 'refs/heads/master' }}
+            type=raw,value=${{ steps.antora.outputs.antora-version }},enable=${{ github.ref == 'refs/heads/master' }}
 
       - name: Build the image for testing
         uses: docker/build-push-action@v7
