@@ -38,6 +38,13 @@
       ],
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "Hold asciidoctor-kroki below 1: 1.x needs @asciidoctor/core 4, while Antora 3.1.14 ships 2.2.9, and test/smoke.sh then fails with 'block.$!= is not a function'",
+      "matchPackageNames": [
+        "asciidoctor-kroki"
+      ],
+      "allowedVersions": "<1"
     }
   ]
 }
