@@ -9,7 +9,9 @@ BUNDLE=${UI_BUNDLE_URL:-https://github.com/vshn/antora-ui-default/releases/lates
 cd "$(dirname "$0")/.."
 rm -rf test/out
 # Antora reads content from a git repository, so commit the fixture into one inside the container
-docker run --rm -v "$PWD":/antora -w /antora --entrypoint /bin/sh "$IMAGE" -c "
+# run as the calling user, so the generated files are not owned by root in the workspace
+docker run --rm -v "$PWD":/antora -w /antora -u "$(id -u):$(id -g)" -e HOME=/tmp \
+  --entrypoint /bin/sh "$IMAGE" -c "
   set -e
   cp -r test/fixture /tmp/fixture-content
   cd /tmp/fixture-content
