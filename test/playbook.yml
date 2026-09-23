@@ -1,0 +1,20 @@
+# Smoke test playbook, see test/smoke.sh. The UI bundle URL comes from --ui-bundle-url.
+site:
+  title: Antora Image Smoke Test
+content:
+  sources:
+  - url: /tmp/fixture-content
+    branches: HEAD
+ui:
+  bundle:
+    url: https://github.com/vshn/antora-ui-default/releases/latest/download/ui-bundle.zip
+asciidoc:
+  attributes:
+    experimental: ''
+    icons: font
+    kroki-server-url: https://kroki.io
+  extensions:
+  - asciidoctor-kroki
+output:
+  dir: /antora/test/out
+  clean: true
