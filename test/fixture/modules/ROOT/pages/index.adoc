@@ -6,9 +6,20 @@ NOTE: Admonitions take their icon from the UI bundle.
 
 Supported: icon:check[]
 
+An inline diagram, rendered by the kroki server:
+
 [plantuml]
 ....
 @startuml
 Alice -> Bob: hello
 @enduml
+....
+
+A diagram fetched at build time and written next to the page:
+
+[graphviz,fetched-diagram,svg]
+....
+digraph g {
+  build -> publish
+}
 ....
