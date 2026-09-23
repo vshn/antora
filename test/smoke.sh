@@ -19,10 +19,22 @@ docker run --rm -v "$PWD":/antora -w /antora --entrypoint /bin/sh "$IMAGE" -c "
 
 page=test/out/fixture/index.html
 fail () { echo "FAIL: $1"; exit 1; }
+
+# the site was generated and uses the UI bundle
 [ -f "$page" ] || fail "$IMAGE generated no page (bundle: $BUNDLE)"
+[ -f test/out/_/css/site.css ] || fail "the UI was not written to test/out/_"
 grep -q '_/css/site.css' "$page" || fail "$page does not use the UI bundle"
 grep -q 'admonitionblock note' "$page" || fail "$page is missing the admonition"
 grep -q 'class="fa icon-note"' "$page" || fail "$page is missing the admonition icon element"
-grep -q 'kroki' "$page" || fail "$page is missing the diagram, so the kroki extension did not run"
-[ -f test/out/_/css/site.css ] || fail "the UI was not written to test/out/_"
-echo "OK: $IMAGE built $page with $BUNDLE"
+
+# asciidoctor-kroki turned both diagram blocks into images and fetched them from the kroki server
+images=$(grep -c '<img src="_images/[^"]*\.svg"' "$page" || true)
+[ "$images" -ge 2 ] || fail "$page has $images kroki diagram images, expected 2 (kroki extension did not run)"
+svgs=$(find test/out/fixture/_images -name '*.svg' | wc -l | tr -d ' ')
+[ "$svgs" -ge 2 ] || fail "$svgs diagrams were fetched into _images, expected 2"
+for svg in test/out/fixture/_images/*.svg; do
+  grep -q '<svg' "$svg" || fail "$svg is not an SVG, so the kroki server response was not stored"
+done
+grep -q 'fetched-diagram' "$page" || fail "$page is missing the named diagram target"
+
+echo "OK: $IMAGE built $page with $BUNDLE ($images diagrams)"
