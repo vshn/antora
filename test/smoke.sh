@@ -25,7 +25,8 @@ fail () { echo "FAIL: $1"; exit 1; }
 # the site was generated and uses the UI bundle
 [ -f "$page" ] || fail "$IMAGE generated no page (bundle: $BUNDLE)"
 [ -f test/out/_/css/site.css ] || fail "the UI was not written to test/out/_"
-grep -q '_/css/site.css' "$page" || fail "$page does not use the UI bundle"
+# the UI asset names carry a content hash, so match the stem
+grep -qE '_/css/site(-[0-9a-f]{8})?\.css' "$page" || fail "$page does not use the UI bundle"
 grep -q 'admonitionblock note' "$page" || fail "$page is missing the admonition"
 grep -q 'class="fa icon-note"' "$page" || fail "$page is missing the admonition icon element"
 
